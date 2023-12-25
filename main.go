@@ -24,14 +24,14 @@ func main() {
 
 	fmt.Println("domain,hasMX,hasSPF,spfRecord,hasDMARC,dmarcRecord")
 	for sc.Scan() {
-		checkDomain(sc.Text())
+		CheckDomain(sc.Text())
 	}
 	if sc.Err() != nil {
 		log.Fatalf(sc.Err().Error())
 	}
 }
 
-func checkDomain(domain string) {
+func CheckDomain(domain string) (isValidDomain bool) {
 	var hasMX, hasSPF, hasDMARC bool
 	var spfRecord, dmarcRecord string
 
@@ -75,4 +75,9 @@ func checkDomain(domain string) {
 	}
 
 	fmt.Printf("%v,%v,%v,%v,%v,%v", domain, hasMX, hasSPF, spfRecord, hasDMARC, dmarcRecord)
+
+	if hasMX || hasSPF || hasDMARC {
+		isValidDomain = true
+	}
+	return
 }
